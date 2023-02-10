@@ -21,12 +21,12 @@ except ImportError:
 led_waiting_time = 1
 last_led_time = False
 led_on = False
-LED_PIN = 17
+LED_PIN = 26
 
 win = curses.initscr()
 
 def output_setup():
-    GPIO.setmode(GPIO.BCM)
+    GPIO.setmode(GPIO.BOARD)
     GPIO.setup(LED_PIN, GPIO.OUT)
     print("OUTPUT FOUND")
 
@@ -107,6 +107,6 @@ def output_led(b, m):
             led_on = False
 
 
-
+output_setup()
 test_output()
 print("1/4 OUTPUT MODULE LOADED")
