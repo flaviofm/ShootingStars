@@ -106,7 +106,4 @@ def output_led(b, m):
             GPIO.output(LED_PIN, GPIO.LOW)
             led_on = False
 
-
-output_setup()
-test_output()
 print("1/4 OUTPUT MODULE LOADED")
