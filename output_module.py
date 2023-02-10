@@ -21,7 +21,7 @@ except ImportError:
 led_waiting_time = 1
 last_led_time = False
 led_on = False
-LED_PIN = 26
+LED_PIN = 40
 
 win = curses.initscr()
 
