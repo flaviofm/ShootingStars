@@ -35,7 +35,7 @@ OM.output_setup()
 
 # ##ANALISYS
 # AM.setup_output_callback(OM.output_led)
-AM.setup_output_callback(OM.output_test)
+AM.setup_output_callback(OM.output_full)
 
 ##STREAM
 # SM.channel_setup(FORMAT, CHANNELS, RATE, CHUNK)

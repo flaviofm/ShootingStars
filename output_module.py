@@ -86,6 +86,32 @@ def output_test(b, m):
     #     win.addstr('\n[☆]' + str(m))
     #     win.refresh()
 
+def output_full(b, m):
+    global last_led_time, led_waiting_time, led_on
+    now = datetime.datetime.now()
+    if last_led_time:
+        if((now - last_led_time).seconds < led_waiting_time):
+            win.addstr("WAITING")
+            return
+        else:
+            win.clear()
+            if(b):
+                last_led_time = now
+                win.addstr('\n[★]' + str(m) + "ON")
+                GPIO.output(LED_PIN, GPIO.HIGH)
+            else:
+                win.addstr('\n[☆]' + str(m) + "OFF")
+                GPIO.output(LED_PIN, GPIO.LOW)
+            win.refresh()
+    else:
+        win.clear()
+        if(b):
+            last_led_time = now
+            win.addstr('\n[★]' + str(m) + "ON")
+        else:
+            win.addstr('\n[☆]' + str(m) + "OFF")
+        win.refresh()
+
 def output_led(b, m):
     global last_led_time, led_waiting_time, led_on
     print("OUTPUT: TRUE")
