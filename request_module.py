@@ -5,6 +5,8 @@ import time
 #     data = numpy.frombuffer(in_data, numpy.int32)
 #     print("callback", data)
 
+SAMPLE_SIZE = 10
+
 reading = False
 
 def setup_stream():
@@ -17,17 +19,21 @@ def setup_stream():
 
 def start_reading(callback):
     global reading, response
+    chunks = []
     if not response:
         print("RESPONSE ERROR")
         return False
     reading = True
     print("STARTING READING")
     while reading:
-        chunk = response.read(512)
+        chunk = response.read(1024)
+        chunks.append(chunk)
+        if(len(chunks) >= SAMPLE_SIZE):
+            chunks.pop(0)
         if not chunk:
             reading = False
             break
-        callback(chunk)
+        callback(chunks)
         # time.sleep(.1)
     print("LOOP BREAK")
 

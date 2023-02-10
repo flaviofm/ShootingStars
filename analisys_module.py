@@ -13,6 +13,15 @@ TARA = 0.016357235764734
 def format_data(data, CHUNK):
     return np.array(struct.unpack(str(CHUNK) + "B", data), dtype="b")
 
+def format_data_array(data, CHUNK):
+    tot = 0
+    for e in data:
+        d = np.array(struct.unpack(str(CHUNK) + "B", e), dtype="b")
+        tot += np.mean(d)
+    tot /= len(data)
+    print(str(tot))
+    return np.mean(tot)
+
 # def analyse_data(data, CHUNK):
 #     data = format_data(data, CHUNK)
 #     m = np.mean(data)
@@ -58,8 +67,7 @@ def currentCallback(in_data):
         print("No output callback")
         return False
     # data = np.frombuffer(in_data, np.int32)
-    data = format_data(in_data, 512)
-
+    data = format_data(in_data, 1024)
     # print(d)
 
     # # Number of sample points
@@ -80,6 +88,18 @@ def currentCallback(in_data):
     if(m > -TARA and m < TARA):
         output_callback(True, m)
     output_callback(False, m)
+
+def arrayCallback(in_data):
+    global output_callback
+    if not output_callback:
+        print("No output callback")
+        return False
+    # data = np.frombuffer(in_data, np.int32)
+    m = format_data_array(in_data, 1024)
+    if(m > -TARA and m < TARA):
+        output_callback(True, m)
+    output_callback(False, m)
+
 
 
 print("4/4 ANALISYS MODULE LOADED")

@@ -44,7 +44,7 @@ AM.setup_output_callback(OM.output_full)
 RM.setup_stream()
 print("END2")
 
-RM.start_reading(AM.currentCallback)
+RM.start_reading(AM.arrayCallback)
 print("END3")
 
 # ##ANALISYS
