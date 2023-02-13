@@ -6,6 +6,7 @@ from scipy.fft import fft, ifft, fftfreq
 
 # TARA = 1.6357235764734
 TARA = 0.016357235764734
+TARA = 0.0016357235764734
 # TARA_OVERFLOW = 36
 # win = curses.initscr()
 

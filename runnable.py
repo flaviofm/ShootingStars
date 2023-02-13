@@ -11,7 +11,7 @@ import request_module as RM
 
 # import stream_analysis_module as SAM
 ##VARIABLES
-CHUNK = 1024
+CHUNK = 512
 # FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
