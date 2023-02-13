@@ -11,10 +11,10 @@ import request_module as RM
 
 # import stream_analysis_module as SAM
 ##VARIABLES
-CHUNK = 8192
-FORMAT = pyaudio.paInt16
+CHUNK = 1024
+# FORMAT = pyaudio.paInt16
 CHANNELS = 1
-RATE = CHUNK
+RATE = 44100
 
 # def analysis(in_data, frame_count, time_info, flag):
 #     audio_data = np.fromstring(in_data, dtype=np.float32)
@@ -44,7 +44,7 @@ AM.setup_output_callback(OM.output_full)
 RM.setup_stream()
 print("END2")
 
-RM.start_reading(AM.arrayCallback)
+RM.start_reading(AM.arrayCallback, CHUNK)
 print("END3")
 
 # ##ANALISYS

@@ -6,6 +6,7 @@ from scipy.fft import fft, ifft, fftfreq
 
 # TARA = 1.6357235764734
 TARA = 0.016357235764734
+# TARA_OVERFLOW = 36
 # win = curses.initscr()
 
 
@@ -49,25 +50,25 @@ def setup_output_callback(cb):
     print("OUTPUT CALLBACK SETTED")
 
 
-# def currentCallback(in_data):
+# def currentCallback(in_data, size):
 #     global output_callback
 #     if not output_callback:
 #         print("No output callback")
 #         return False
-#     data = format_data(in_data, 1024)
+#     data = format_data(in_data, size)
 #     print("callback", data)
 #     m = np.mean(data)
 #     if(m > TARA or m < -TARA):
 #         output_callback(True, m)
 #     output_callback(False, m)
 
-def currentCallback(in_data):
+def currentCallback(in_data, size):
     global output_callback
     if not output_callback:
         print("No output callback")
         return False
     # data = np.frombuffer(in_data, np.int32)
-    data = format_data(in_data, 1024)
+    data = format_data(in_data, size)
     # print(d)
 
     # # Number of sample points
@@ -84,18 +85,24 @@ def currentCallback(in_data):
     # print("callback", data)
     # d = fft(data)
     m = np.mean(data)
-    # if(m.all() > TARA or m.all() < -TARA):
-    if(m > -TARA and m < TARA):
+    if(m.all() > TARA or m.all() < -TARA):
+    # if(m > TARA_OVERFLOW or m < -TARA_OVERFLOW):
         output_callback(True, m)
     output_callback(False, m)
 
-def arrayCallback(in_data):
+def arrayCallback(in_data, size):
     global output_callback
     if not output_callback:
         print("No output callback")
         return False
     # data = np.frombuffer(in_data, np.int32)
-    m = format_data_array(in_data, 1024)
+    m = format_data_array(in_data, size)
+    # for c in in_data:
+    #     d = np.array(struct.unpack(str(size) + "B", c), dtype="b")
+    #     m = np.mean(d)
+    #     if(m > TARA_OVERFLOW or m < -TARA_OVERFLOW):
+    #         output_callback(True, m)
+    #     output_callback(False, m)
     if(m > -TARA and m < TARA):
         output_callback(True, m)
     output_callback(False, m)
