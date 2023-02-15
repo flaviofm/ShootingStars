@@ -19,7 +19,7 @@ except ImportError:
 
 
 def led_waiting_time():
-    return random.uniform(1.5, 1.9)
+    return random.uniform(0.8, 3)
 last_led_time = False
 led_on = False
 LED_PIN = 40
@@ -60,7 +60,7 @@ CHANNELS = 1
 RATE = 22050
 URL = 'http://192.167.189.254:5123'
 SAMPLE_RATE = 5
-THRESHOLD = 0.016
+THRESHOLD = 0.006
 
 try:
     response = urllib.request.urlopen(URL)
