@@ -60,7 +60,7 @@ CHANNELS = 1
 RATE = 22050
 URL = 'http://192.167.189.254:5123'
 SAMPLE_RATE = 5
-THRESHOLD = 0.006
+THRESHOLD = 0.016
 
 try:
     response = urllib.request.urlopen(URL)
