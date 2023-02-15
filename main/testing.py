@@ -76,7 +76,7 @@ FORMAT = pyaudio.paInt32
 # THRESHOLD_AMP = 900
 # THRESHOLD_FRQ = 1300
 THRESHOLD_AMP = 32500
-THRESHOLD_FRQ = 0.1
+THRESHOLD_FRQ = 0.05
 
 def process_audio(data):
     # Convert the raw audio data to a NumPy array
