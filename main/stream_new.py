@@ -121,4 +121,6 @@ print("2/2 STREAMING READY")
 # Continuously process audio chunks
 while True:
     data = stream.read(CHUNK_SIZE)
+    if not data:
+        print("NO")
     process_audio(data)
