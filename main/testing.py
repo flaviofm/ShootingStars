@@ -42,6 +42,7 @@ def output(s):
     if LAST_CALL is None and s:
         LAST_CALL = time.time()
         led(True)
+        print("a")
         return
 
     if LAST_CALL is not None:
@@ -49,7 +50,9 @@ def output(s):
             if (time.time() - LAST_CALL) > MIN_SECS:
                 led(False)
                 LAST_CALL = None
+                print("a")
         else:
+            print("a")
             LAST_CALL = time.time()
 
 # def output(s):
