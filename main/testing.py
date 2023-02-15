@@ -20,8 +20,9 @@ except ImportError:
     print("FAKE GPIO imported")
 
 
-def led_waiting_time():
-    return random.uniform(0.8, 3)
+# def led_waiting_time():
+#     x = random.uniform(0.2, 1.3)
+#     return x
 
 LED_PIN = 40
 LED = False
@@ -33,49 +34,118 @@ GPIO.setup(LED_PIN, GPIO.OUT)
 print("OUTPUT FOUND")
 
 import time
-LAST_CALL = None
 
-MIN_SECS = 1.5
+def getStarHold():
+    MIN_SECS = 0.6 # minimo durata input
+    return MIN_SECS + random.uniform(0.2, 3)
+
+LAST_STAR = None #ultima stella registrata da pin
+LAST_CALL = None #ultima chiamata di output
+MIN_STAR = 60 #tempo minimo per una stella
+MAX_STAR = 30 #attesa minima tra stelle
+
+LED_ON = False
 
 def output(s):
-    global LAST_CALL
-    if(s):
-        if not LAST_CALL:
-            led(True)
-        LAST_CALL = time.time()
-    else:
-        if not LAST_CALL or (time.time() - LAST_CALL) > MIN_SECS:
-            led(False)
-    # if LAST_CALL is None and s:
-    #     LAST_CALL = time.time()
-    #     led(True)
-    #     print("a")
-    #     return
+    global LAST_CALL, LED_ON, MIN_STAR, MAX_STAR
+    if not LAST_CALL:
+        if s:
+            LAST_CALL = time.time()
+            print("First STAR!")
+            pin(True)
+        return
 
-    # if LAST_CALL is not None:
-    #     if not s:
-    #         if (time.time() - LAST_CALL) > MIN_SECS:
-    #             led(False)
-    #             LAST_CALL = None
-    #             print("b")
-    #     else:
-    #         print("c")
-    #         LAST_CALL = time.time()
+    if s:
+        if not LED_ON:
+            if (time.time() - LAST_CALL) >= MAX_STAR:
+                pin(True)
+                LAST_CALL = time.time()
+            else:
+                print("SATELLITE")
+    else:
+        if not LED_ON:
+            if(time.time() - LAST_CALL) >= MIN_STAR:
+                output(True) #auto star if not in MIN_STAR TIME
+        else:
+            if (time.time() - LAST_CALL) > getStarHold():
+                pin(False) #minimo durata stella
+            # else:
+            #     print(MIN_SECS - (time.time() - LAST_CALL))
+        return
+
+def pin(t):
+    global LAST_STAR, LED_ON
+    print("★" if t else "☆")
+    if LAST_STAR:
+        print("Star lasted {} seconds".format(time.time() - LAST_STAR))
+        LAST_STAR = None
+    elif t:
+        LAST_STAR = time.time()
+    GPIO.output(LED_PIN, GPIO.HIGH if t else GPIO.LOW)
+    LED_ON = t
+
 
 # def output(s):
-#     global LAST_CALL
-#     if s:
-#         LAST_CALL = LAST_CALL or time.time()
-#         led(True)
-#     elif LAST_CALL and time.time() - LAST_CALL > MIN_SECS:
-#         LAST_CALL, _ = (led(False), None)
+#     global LAST_CALL, LAST_STAR
+#     if(s):
+#         if not LAST_CALL:
+#             led(True)
+#         LAST_CALL = time.time()
+#     else:
+#         if not LAST_CALL:
+#             led(False)
+#             return
+#         x = led_waiting_time()
+#         if (time.time() - LAST_CALL) > (MIN_SECS + x):
+#             led(False)
 
-def led(s):
-    # print(s)
-    if s:
-        GPIO.output(LED_PIN, GPIO.HIGH)
-    else:
-        GPIO.output(LED_PIN, GPIO.LOW)
+# # def output(s):
+# #     global LAST_CALL
+# #     if s:
+# #         LAST_CALL = LAST_CALL or time.time()
+# #         led(True)
+# #     elif LAST_CALL and time.time() - LAST_CALL > MIN_SECS:
+# #         LAST_CALL, _ = (led(False), None)
+
+
+# def led(s):
+#     # print(s)
+#     global LAST_STAR
+
+#     if not LAST_STAR and not s:
+#         return
+    
+#     if not LAST_STAR and s:
+#         LAST_STAR = time.time()
+#         pin(True)
+#         return
+
+#     #last star not null
+#     if s:
+#         LAST_STAR = time.time()
+#     else:
+#         if (time.time() - LAST_STAR) > 
+
+
+    # if LAST_STAR and s and (time.time() - LAST_STAR) < MAX_STAR:
+    #     print("SATELLITE")
+    #     GPIO.output(LED_PIN, GPIO.LOW)
+    #     return
+
+    # if s:
+    #     LAST_STAR = time.time()
+
+    # if not LAST_STAR:
+    #     return
+    # if (time.time() - LAST_STAR) > MIN_STAR:
+    #     print("CHECK")
+    #     GPIO.output(LED_PIN, GPIO.HIGH)
+    #     LAST_STAR = time.time()
+    #     return
+
+
+
+        
 
 print("1/3 OUTPUT MODULE LOADED")
 
@@ -132,6 +202,7 @@ RATE = 22050
 URL = 'http://192.167.189.254:5123'
 SAMPLE_RATE = 5
 THRESHOLD = 0.016
+# THRESHOLD = 0.05
 
 try:
     response = urllib.request.urlopen(URL)
