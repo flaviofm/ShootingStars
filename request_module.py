@@ -36,6 +36,7 @@ def start_reading(callback, size):
             reading = False
             break
         callback(chunks, size)
+        # break
         # time.sleep(.1)
     print("LOOP BREAK")
 
