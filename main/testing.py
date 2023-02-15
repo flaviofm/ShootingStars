@@ -41,13 +41,20 @@ def getStarHold():
 
 LAST_STAR = None #ultima stella registrata da pin
 LAST_CALL = None #ultima chiamata di output
-MIN_STAR = 60 #tempo minimo per una stella
-MAX_STAR = 30 #attesa minima tra stelle
+
+def getMinStarTime():
+    MIN_STAR = 60 #tempo minimo per una stella
+    return MIN_STAR + random.uniform(0, 30)
+
+def getStarWaitingTime():
+    MAX_STAR = 30 #attesa minima tra stelle
+    return MAX_STAR + random.uniform(0, 15)
+
 
 LED_ON = False
 
 def output(s):
-    global LAST_CALL, LED_ON, MIN_STAR, MAX_STAR
+    global LAST_CALL, LED_ON
     if not LAST_CALL:
         if s:
             LAST_CALL = time.time()
@@ -57,14 +64,14 @@ def output(s):
 
     if s:
         if not LED_ON:
-            if (time.time() - LAST_CALL) >= MAX_STAR:
+            if (time.time() - LAST_CALL) >= getStarWaitingTime():
                 pin(True)
                 LAST_CALL = time.time()
             else:
                 print("SATELLITE")
     else:
         if not LED_ON:
-            if(time.time() - LAST_CALL) >= MIN_STAR:
+            if(time.time() - LAST_CALL) >= getMinStarTime():
                 output(True) #auto star if not in MIN_STAR TIME
         else:
             if (time.time() - LAST_CALL) > getStarHold():
