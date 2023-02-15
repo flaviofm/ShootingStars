@@ -69,10 +69,11 @@ def led(s):
     else:
         GPIO.output(LED_PIN, GPIO.LOW)
 
-print("1/2 OUTPUT MODULE LOADED")
+print("1/3 OUTPUT MODULE LOADED")
 
 CHUNK_SIZE = 1024
 SAMPLE_RATE = 22050
+FORMAT = pyaudio.paInt32
 
 # THRESHOLD_AMP = 900
 # THRESHOLD_FRQ = 1300
@@ -102,7 +103,7 @@ def process_audio(data):
     max_freq = freq_bins[max_freq_index]
 
     # Print the amplitude and frequency of the audio chunk
-    # print("Amplitude: {}, Frequency: {}".format(amplitude, max_freq))
+    print("Amplitude: {}, Frequency: {}".format(amplitude, max_freq))
     if(amplitude > THRESHOLD_AMP and max_freq > THRESHOLD_FRQ):
         output(True)
     else: 
@@ -111,16 +112,41 @@ def process_audio(data):
 
 # Set up the PyAudio stream
 p = pyaudio.PyAudio()
-stream = p.open(format=pyaudio.paInt16,
-                channels=1,
-                rate=SAMPLE_RATE,
-                input=True,
-                frames_per_buffer=CHUNK_SIZE)
-print("2/2 STREAMING READY")
+# stream = p.open(format=pyaudio.paInt16,
+#                 channels=1,
+#                 rate=SAMPLE_RATE,
+#                 input=True,
+#                 frames_per_buffer=CHUNK_SIZE)
 
-# Continuously process audio chunks
-while True:
-    data = stream.read(CHUNK_SIZE)
+# Set up PyAudio stream for playback
+stream_out = p.open(format=FORMAT,
+                    channels=1,
+                    rate=SAMPLE_RATE,
+                    output=True,
+                    frames_per_buffer=CHUNK_SIZE)
+print("2/3 AUDIO STREAMING READY")
+
+# # Continuously process audio chunks
+# while True:
+#     data = stream.read(CHUNK_SIZE)
+#     if not data:
+#         print("NO")
+#     audio_array = np.frombuffer(data, dtype=np.int16)
+#     stream_out.write(data)
+#     process_audio(data)
+# Make an HTTP GET request to the audio stream URL
+import requests
+
+url = "http://192.167.189.254:5123"
+response = requests.get(url, stream=True)
+
+print("3/3 HTTP STREAMING READY")
+
+
+# Continuously process audio chunks from the HTTP response stream
+for data in response.iter_content(chunk_size=CHUNK_SIZE):
     if not data:
         print("NO")
+    audio_array = np.frombuffer(data, dtype=np.int16)
+    stream_out.write(data)
     process_audio(data)

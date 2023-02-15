@@ -37,6 +37,12 @@ audio_data = audio_file.raw_data
 
 # Create an index to read audio data from
 start_idx = 0
+import pyaudio
+p = pyaudio.PyAudio()
+stream_out = p.open(format=pyaudio.paInt16,
+                    channels=1,
+                    rate=SAMPLE_RATE,
+                    output=True)
 
 # Continuously process audio chunks
 while start_idx < len(audio_data):
@@ -45,6 +51,8 @@ while start_idx < len(audio_data):
 
     # Process the audio chunk
     process_audio(data)
+    audio_array = np.frombuffer(data, dtype=np.int16)
+    stream_out.write(data)
 
     # Update the index to the next chunk
     start_idx += CHUNK_SIZE
