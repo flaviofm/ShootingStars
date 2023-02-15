@@ -1,6 +1,7 @@
 #OUTPUT
 import datetime
 import importlib.util
+import random
 
 try:
     importlib.util.find_spec('RPi.GPIO')
@@ -17,7 +18,8 @@ except ImportError:
     print("FAKE GPIO imported")
 
 
-led_waiting_time = 3
+def led_waiting_time():
+    return random.uniform(1.5, 1.9)
 last_led_time = False
 led_on = False
 LED_PIN = 40
