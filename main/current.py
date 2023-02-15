@@ -31,11 +31,11 @@ GPIO.setup(LED_PIN, GPIO.OUT)
 print("OUTPUT FOUND")
 
 def output(b, m=0):
-    global last_led_time, led_waiting_time, led_on
+    global last_led_time, led_on
     # print(b)
     now = datetime.datetime.now()
     if last_led_time:
-        if((now - last_led_time).seconds < led_waiting_time):
+        if((now - last_led_time).seconds < led_waiting_time()):
             return
         else:
             if(b):
