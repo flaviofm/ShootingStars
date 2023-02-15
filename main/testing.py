@@ -68,7 +68,7 @@ def output(s):
                 pin(True)
                 LAST_CALL = time.time()
             else:
-                print("SATELLITE")
+                print(random.choice(["SATELLITE", "FP", "FP"]))
     else:
         if not LED_ON:
             if(time.time() - LAST_CALL) >= getMinStarTime():
@@ -208,8 +208,8 @@ CHANNELS = 1
 RATE = 22050
 URL = 'http://192.167.189.254:5123'
 SAMPLE_RATE = 5
-THRESHOLD = 0.016
-# THRESHOLD = 0.05
+# THRESHOLD = 0.016
+THRESHOLD = 0.05
 
 try:
     response = urllib.request.urlopen(URL)
