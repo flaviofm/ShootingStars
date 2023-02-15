@@ -75,7 +75,7 @@ FORMAT = pyaudio.paInt32
 
 # THRESHOLD_AMP = 900
 # THRESHOLD_FRQ = 1300
-THRESHOLD_AMP = 32500
+THRESHOLD_AMP = 32727 + 500
 THRESHOLD_FRQ = 0.05
 
 def process_audio(data):
@@ -99,7 +99,7 @@ def process_audio(data):
     #     print("!!!!!!!!!!!!!!!!!!!!!!!!! Amplitude: {}, Frequency: {}".format(amplitude, max_freq))
     # if(amplitude > THRESHOLD_AMP and max_freq > THRESHOLD_FRQ):
     # print(max_freq)
-    if(max_freq < THRESHOLD_FRQ):
+    if(amplitude > THRESHOLD_AMP and max_freq < THRESHOLD_FRQ):
         output(True)
     else: 
         output(False)
@@ -154,6 +154,6 @@ while reading:
     if not chunk:
         reading = False
     else:
-        # analyse(chunk)
-        process_audio(chunk)
+        analyse(chunk)
+        # process_audio(chunk)
 
