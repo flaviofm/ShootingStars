@@ -38,23 +38,29 @@ LAST_CALL = None
 MIN_SECS = 1.5
 
 def output(s):
-    print(s)
     global LAST_CALL
-    if LAST_CALL is None and s:
+    if(s):
+        if not LAST_CALL:
+            led(True)
         LAST_CALL = time.time()
-        led(True)
-        print("a")
-        return
+    else:
+        if (time.time() - LAST_CALL) > MIN_SECS:
+            led(False)
+    # if LAST_CALL is None and s:
+    #     LAST_CALL = time.time()
+    #     led(True)
+    #     print("a")
+    #     return
 
-    if LAST_CALL is not None:
-        if not s:
-            if (time.time() - LAST_CALL) > MIN_SECS:
-                led(False)
-                LAST_CALL = None
-                print("b")
-        else:
-            print("c")
-            LAST_CALL = time.time()
+    # if LAST_CALL is not None:
+    #     if not s:
+    #         if (time.time() - LAST_CALL) > MIN_SECS:
+    #             led(False)
+    #             LAST_CALL = None
+    #             print("b")
+    #     else:
+    #         print("c")
+    #         LAST_CALL = time.time()
 
 # def output(s):
 #     global LAST_CALL
