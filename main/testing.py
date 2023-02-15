@@ -38,6 +38,7 @@ LAST_CALL = None
 MIN_SECS = 1.5
 
 def output(s):
+    print(s)
     global LAST_CALL
     if LAST_CALL is None and s:
         LAST_CALL = time.time()
@@ -124,7 +125,7 @@ CHANNELS = 1
 RATE = 22050
 URL = 'http://192.167.189.254:5123'
 SAMPLE_RATE = 5
-THRESHOLD = 1
+THRESHOLD = 0.016
 
 try:
     response = urllib.request.urlopen(URL)
