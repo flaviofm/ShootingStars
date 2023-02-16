@@ -95,13 +95,6 @@ def pin(t):
     GPIO.output(LED_PIN, GPIO.HIGH if t else GPIO.LOW)
     LED_ON = t
 
-def blink(n):
-    for bi in range(n):
-        GPIO.output(LED_PIN, GPIO.HIGH if bi%2==0 else GPIO.LOW)
-        time.sleep(1)
-
-blink(5)
-
 print("1/3 OUTPUT MODULE LOADED")
 
 CHUNK_SIZE = 1024
