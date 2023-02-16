@@ -98,9 +98,10 @@ def pin(t):
 
 def blink(n):
     for bi in range(n):
-        GPIO.output(LED_PIN, GPIO.HIGH if bi%2==0 else GPIO.LOW)
-        time.sleep(1)
-
+        GPIO.output(LED_PIN, GPIO.LOW if bi%2==0 else GPIO.HIGH)
+        time.sleep(1 if bi%2==0 else .5)
+    GPIO.output(LED_PIN, GPIO.LOW)
+    
 blink(5)
 
 print("1/3 OUTPUT MODULE LOADED")
